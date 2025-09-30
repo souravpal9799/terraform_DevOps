@@ -8,5 +8,18 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  access_key = "AKIARYEUCONSKBTLL3PS"
+  secret_key = "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"
+  region = "ap-south-1"
+}
+
+# Generate SSH key locally before creating AWS key pair
+resource "null_resource" "generate_ssh_key" {
+  triggers = {
+    script_hash = filesha256("${path.root}/scripts/gen_ssh_key.sh")
+  }
+
+  provisioner "local-exec" {
+    command = "bash '${path.root}'/scripts/gen_ssh_key.sh"
+  }
 }
